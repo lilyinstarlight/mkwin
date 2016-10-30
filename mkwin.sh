@@ -102,9 +102,9 @@ grub-install --target=x86_64-efi --boot-directory="$efimnt" --efi-directory="$ef
 ms-sys -7 "$dev" >/dev/null
 
 # fix Windows 7 not coming with EFI boot by default
-if [ ! -e "$winmnt"/efi/boot/bootx64.efi ]; then
+if [ ! -e "$isomnt"/efi/boot/bootx64.efi ]; then
 	mkdir -p "$winmnt"/efi/boot
-	7z e -so "$isomnt"/sources/install.wim 1/Windows/Boot/EFI/bootmgfw.efi > "$winmnt"/efi/boot/bootx64.efi
+	7z e -so "$isomnt"/sources/install.wim 1/Windows/Boot/EFI/bootmgfw.efi >"$winmnt"/efi/boot/bootx64.efi
 fi
 
 unset dev
