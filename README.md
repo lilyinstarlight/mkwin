@@ -11,6 +11,7 @@ Requirements
 * grub
 * dosfstools
 * ntfs3g
+* 7z (optional; required for Windows 7)
 * dialog (optional; required if not specifying device on command line)
 * sane environment (util-linux, coreutils, etc.)
 

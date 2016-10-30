@@ -92,6 +92,7 @@ mount "$winpart" "$winmnt"
 mount "$efipart" "$efimnt"
 mount -o ro "$iso" "$isomnt"
 
+unset iso
 unset efipart
 unset winpart
 
@@ -99,6 +100,12 @@ unset winpart
 echo "installing bootloaders..."
 grub-install --target=x86_64-efi --boot-directory="$efimnt" --efi-directory="$efimnt" --removable >/dev/null
 ms-sys -7 "$dev" >/dev/null
+
+# fix Windows 7 not coming with EFI boot by default
+if [ ! -e "$winmnt"/efi/boot/bootx64.efi ]; then
+	mkdir -p "$winmnt"/efi/boot
+	7z e -so "$isomnt"/sources/install.wim 1/Windows/Boot/EFI/bootmgfw.efi > "$winmnt"/efi/boot/bootx64.efi
+fi
 
 unset dev
 
