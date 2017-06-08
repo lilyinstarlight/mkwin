@@ -99,7 +99,7 @@ unset winpart
 # install bootloaders
 echo "installing bootloaders..."
 grub-install --target=x86_64-efi --boot-directory="$efimnt" --efi-directory="$efimnt" --removable >/dev/null
-ms-sys -7 "$dev" >/dev/null
+grub-install --target=i386-pc --boot-directory="$efimnt" "$dev" >/dev/null
 
 # fix Windows 7 not coming with EFI boot by default
 if [ ! -e "$isomnt"/efi/boot/bootx64.efi ]; then
@@ -115,8 +115,12 @@ cat >"$efimnt"/grub/grub.cfg <<EOF
 if loadfont /grub/fonts/unicode.pf2; then
 	set gfxmode=auto
 
-	insmod efi_gop
-	insmod efi_uga
+	if [ \${grub_platform} == "efi" ]; then
+		insmod efi_gop
+		insmod efi_uga
+	else
+		insmod all_video
+	fi
 
 	insmod gfxterm
 	terminal_output gfxterm
@@ -132,7 +136,11 @@ set timeout=0
 search --no-floppy --label --set=root $label
 
 menuentry "$label" {
-	chainloader /efi/boot/bootx64.efi
+	if [ \${grub_platform} == "efi" ]; then
+		chainloader /efi/boot/bootx64.efi
+	else
+		ntldr /bootmgr
+	fi
 }
 EOF
 

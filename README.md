@@ -7,7 +7,6 @@ mkwin is a shell script to create a Windows installation USB from ISO. It suppor
 Requirements
 ============
 
-* ms-sys
 * grub
 * dosfstools
 * ntfs3g
