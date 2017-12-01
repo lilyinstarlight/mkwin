@@ -89,7 +89,7 @@ mount "$winpart" "$winmnt"
 mount "$efipart" "$efimnt"
 mount -o ro "$iso" "$isomnt"
 
-trap "umount '$winmnt'; rmdir '$winmnt'; umount '$efimnt'; rmdir '$efimnt'; umount '$isomnt'; rmdir '$isomnt'" EXIT
+trap "(set +e; umount '$winmnt'; rmdir '$winmnt'; umount '$efimnt'; rmdir '$efimnt'; umount '$isomnt'; rmdir '$isomnt') &>/dev/null" EXIT
 
 unset iso
 unset efipart
