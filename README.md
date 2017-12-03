@@ -20,6 +20,6 @@ Usage
 
 Run the mkwin script in your shell:
 
-    $ sudo ./mkwin.sh <ISO file> [USB device] [NTFS label]
+    $ sudo ./mkwin.sh <iso> [device] [label]
 
 If device is omitted, you will be prompted to select from available removable devices.
