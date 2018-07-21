@@ -1,5 +1,5 @@
 #!/bin/sh -e
-if [ "$UID" -ne "0" ]; then
+if [ "$(id -u)" -ne 0 ]; then
 	echo "error: script must be run as root"
 	exit 1
 fi
@@ -58,13 +58,13 @@ secefi=1048576
 
 # partition device
 echo "partitioning..."
-dd if=/dev/zero of="$dev" count=$secstart &>/dev/null
+dd if=/dev/zero of="$dev" count=$secstart >/dev/null 2>/dev/null
 sfdisk "$dev" >/dev/null <<EOF
 label: dos
 device: $dev
 unit: sectors
 
-${dev}1 : start=$secstart, size=$(expr $(blockdev --getsz "$dev") - $secstart - $secefi), type=7
+${dev}1 : start=$secstart, size=$(expr "$(blockdev --getsz "$dev")" - $secstart - $secefi), type=7
 ${dev}2 : size=$secefi, type=ef
 EOF
 blockdev --rereadpt "$dev"
@@ -89,7 +89,7 @@ mount "$winpart" "$winmnt"
 mount "$efipart" "$efimnt"
 mount -o ro "$iso" "$isomnt"
 
-trap "(set +e; umount '$winmnt'; rmdir '$winmnt'; umount '$efimnt'; rmdir '$efimnt'; umount '$isomnt'; rmdir '$isomnt') &>/dev/null" EXIT
+trap "(set +e; umount '$winmnt'; rmdir '$winmnt'; umount '$efimnt'; rmdir '$efimnt'; umount '$isomnt'; rmdir '$isomnt') >/dev/null 2>/dev/null" EXIT
 
 unset iso
 unset efipart
