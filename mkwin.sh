@@ -4,6 +4,13 @@ if [ "$(id -u)" -ne 0 ]; then
 	exit 1
 fi
 
+# get system configuration
+if which grub2-install &>/dev/null; then
+	sysgrub=grub2
+else
+	sysgrub=grub
+fi
+
 # get distro configuration
 iso="$1"
 if [ -z "$iso" ]; then
@@ -97,8 +104,8 @@ unset winpart
 
 # install bootloaders
 echo "installing bootloaders..."
-grub-install --target=x86_64-efi --boot-directory="$efimnt" --efi-directory="$efimnt" --removable >/dev/null
-grub-install --target=i386-pc --boot-directory="$efimnt" "$dev" >/dev/null
+"$sysgrub"-install --target=x86_64-efi --boot-directory="$efimnt" --efi-directory="$efimnt" --removable >/dev/null
+"$sysgrub"-install --target=i386-pc --boot-directory="$efimnt" "$dev" >/dev/null
 
 # fix Windows 7 not coming with EFI boot by default
 if [ ! -e "$isomnt"/efi/boot/bootx64.efi ]; then
