@@ -92,7 +92,7 @@ echo "mounting..."
 winmnt="$(mktemp -d)"
 efimnt="$(mktemp -d)"
 isomnt="$(mktemp -d)"
-mount "$winpart" "$winmnt"
+ntfs-3g "$winpart" "$winmnt"
 mount "$efipart" "$efimnt"
 mount -o ro "$iso" "$isomnt"
 
