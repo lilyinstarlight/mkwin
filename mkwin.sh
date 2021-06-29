@@ -5,10 +5,24 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 # get system configuration
-if which grub2-install >/dev/null 2>/dev/null; then
+if [ -n "$MKWIN_GRUB" ]; then
+	sysgrub="$MKWIN_GRUB"
+elif which grub2-install >/dev/null 2>/dev/null; then
 	sysgrub=grub2
 else
 	sysgrub=grub
+fi
+
+if [ -n "$MKWIN_GRUB_EFI" ]; then
+	sysgrubefi="$MKWIN_GRUB_EFI"
+else
+	sysgrubefi="$sysgrub"-install
+fi
+
+if [ -n "$MKWIN_GRUB_PC" ]; then
+	sysgrubpc="$MKWIN_GRUB_PC"
+else
+	sysgrubpc="$sysgrub"-install
 fi
 
 # get distro configuration
@@ -104,8 +118,8 @@ unset winpart
 
 # install bootloaders
 echo "installing bootloaders..."
-"$sysgrub"-install --target=x86_64-efi --boot-directory="$efimnt" --efi-directory="$efimnt" --removable >/dev/null
-"$sysgrub"-install --target=i386-pc --boot-directory="$efimnt" "$dev" >/dev/null
+"$sysgrubefi" --target=x86_64-efi --boot-directory="$efimnt" --efi-directory="$efimnt" --removable >/dev/null
+"$sysgrubpc" --target=i386-pc --boot-directory="$efimnt" "$dev" >/dev/null
 
 # fix Windows 7 not coming with EFI boot by default
 if [ ! -e "$isomnt"/efi/boot/bootx64.efi ]; then

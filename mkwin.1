@@ -1,4 +1,4 @@
-.TH "MKWIN" "1" "March 2021" "0.1" ""
+.TH "MKWIN" "1" "June 2021" "0.1" ""
 .hy
 .SH NAME
 .PP
@@ -30,6 +30,22 @@ Label to put on NTFS partition
 .RS
 .PP
 Defaults to "\f[B]WindowsInstaller\f[]"
+.RE
+.SH ENVIRONMENT VARIABLES
+.TP
+.B \f[B]MKWIN_GRUB\f[]
+Prefix for grub utilities and paths (e.g. "\f[B]grub\f[]" or "\f[B]grub2\f[]")
+.RS
+.RE
+.TP
+.B \f[B]MKWIN_GRUB_EFI\f[]
+Path to grub-install with x86_64-efi target
+.RS
+.RE
+.TP
+.B \f[B]MKWIN_GRUB_PC\f[]
+Path to grub-install with i386-pc target
+.RS
 .RE
 .SH AUTHORS
 Lily Foster <lily@lily.flowers>.
