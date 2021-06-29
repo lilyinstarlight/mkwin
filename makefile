@@ -4,7 +4,7 @@ SHRDIR?=$(PREFIX)/share
 
 install:
 	install -D mkwin.sh $(BINDIR)/mkwin
-	install -D mkwin.1 $(SHRDIR)/man/man1/mkwin.1
+	install -Dm 644 mkwin.1 $(SHRDIR)/man/man1/mkwin.1
 
 uninstall:
 	-rm -f $(SHRDIR)/man/man1/mkwin.1
