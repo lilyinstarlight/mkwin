@@ -1,4 +1,13 @@
 #!/bin/sh -e
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+	cat >&2 <<EOF
+$0 <iso> [device] [label]
+
+  See mkwin(1) manual page for more info
+EOF
+	exit
+fi
+
 if [ "$(id -u)" -ne 0 ]; then
 	echo "error: script must be run as root"
 	exit 1
@@ -90,8 +99,13 @@ ${dev}2 : size=$secefi, type=ef
 EOF
 blockdev --rereadpt "$dev"
 
-winpart="$dev"1
-efipart="$dev"2
+if [ -b "$dev"p1 ]; then
+	winpart="$dev"p1
+	efipart="$dev"p2
+else
+	winpart="$dev"1
+	efipart="$dev"2
+fi
 
 unset secstart
 unset secefi
