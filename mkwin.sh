@@ -115,7 +115,7 @@ echo "formatting..."
 mkfs.ntfs -f -L "$label" "$winpart" >/dev/null
 mkfs.fat -F 32 -n ESP "$efipart" >/dev/null
 
-# mount devie
+# mount device
 echo "mounting..."
 winmnt="$(mktemp -d)"
 efimnt="$(mktemp -d)"
@@ -124,7 +124,7 @@ ntfs-3g "$winpart" "$winmnt"
 mount "$efipart" "$efimnt"
 mount -o ro "$iso" "$isomnt"
 
-trap "(set +e; umount '$winmnt'; rmdir '$winmnt'; umount '$efimnt'; rmdir '$efimnt'; umount '$isomnt'; rmdir '$isomnt') >/dev/null 2>/dev/null" EXIT
+trap "(set +e; umount '$winmnt'; rmdir '$winmnt'; umount '$efimnt'; rmdir '$efimnt'; umount '$isomnt'; rmdir '$isomnt'; true) >/dev/null 2>/dev/null" EXIT
 
 unset iso
 unset efipart
